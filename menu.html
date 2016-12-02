@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Tabla de Dudas de Clase</title>
+<link rel="stylesheet" href="custom.css" type="text/css">
+</head>
+<body>
+	<h1>Tabla de dudas</h1>
+	<form method="post">
+		Pregunta : <input id="txtPregunta" type="text" name="valor" value="" /><br>
+		Usuario : <input id="txtUsuario" type="text" name="nombre" value="" /><br>
+		<br> 
+	</form>
+
+	<button onclick="funcionInsert();">Nueva Pregunta</button>
+
+	<h1>Tabla con php:</h1>
+	<div id="id"></div>
+	<h3 id="result">Resultado</h3>
+
+	<script>
+		var xmlhttp = new XMLHttpRequest();
+		var url = "request.php";
+
+		xmlhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("id").innerHTML = this.responseText;
+			}
+		};
+		xmlhttp.open("GET", url, true);
+		xmlhttp.send();
+
+		function funcionIP() {
+			var ip = java.net.InetAddress.getLocalHost().getHostAddress();
+			document.write("Tu IP es: " + ip);
+		}
+
+		function funcionInsert() {
+			var xmlhttp = new XMLHttpRequest();
+			var url = "insertPregunta.php";
+
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					document.getElementById("result").innerHTML = this.responseText;
+					// document.write(this.responseText);
+					// recargarTabla();
+				}
+			};
+			
+			document.getElementById("txtPregunta").value = "";
+			document.getElementById("txtUsuario").value = "";
+			
+			xmlhttp.open("POST", url, true);
+			xmlhttp.send();
+		}
+
+		function recargarTabla() {
+			var xmlhttp = new XMLHttpRequest();
+			var url = "request.php";
+
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					document.getElementById("id").innerHTML = this.responseText;
+				}
+			};
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send();
+		}
+
+		setInterval('recargarTabla()', '5000');
+	</script>
+
+</body>
+</html>
