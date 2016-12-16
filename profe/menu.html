@@ -10,7 +10,8 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<body onload="recargarTabla()">
+<body onload="recargarTabla()"
+	style="background-color: #ccff99; text-align: center;">
 	<h1>Tabla con JSON:</h1>
 
 	<div align="center">
@@ -50,9 +51,9 @@
 							abierta = "Resuelta";
 						else
 							abierta = "No Resuelta";
-						out += '<tr><td>' + myArr[i].idPeticion + '</td><td>'
-								+ myArr[i].direccionIP + '</td><td>'
-								+ myArr[i].usuario + '</td><td>'
+						out += '<tr class="info"><td>' + myArr[i].idPeticion
+								+ '</td><td>' + myArr[i].direccionIP
+								+ '</td><td>' + myArr[i].usuario + '</td><td>'
 								+ myArr[i].texto + '</td><td>' + abierta
 								+ '</td><td>' + myArr[i].fechaInicio
 								+ '</td><td>' + myArr[i].fechaFin
