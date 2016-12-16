@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Tabla de Dudas de Clase</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body onload="recargarTabla()"
+	style="background-color: #ccff99; text-align: center;">
+	<h1>Tabla de dudas</h1>
+	<form method="post">
+		Pregunta : <input id="txtPregunta" type="text" name="valor" value="" /><br>
+		Usuario : <input id="txtUsuario" type="text" name="nombre" value="" /><br>
+		<br>
+	</form>
+
+	<button onclick="funcionInsertJson();">Nueva Pregunta</button>
+
+	<h1>Tabla con php:</h1>
+	<br>
+	<div align="center">
+		<div style="width: 50%; text-align: center;">
+			<table class="table">
+				<thead>
+					<tr class="warning">
+						<th>idPeticion</th>
+						<th>direccion IP</th>
+						<th>usuario</th>
+						<th>texto</th>
+						<th>abierta</th>
+						<th>fechaInicio</th>
+						<th>fechaFin</th>
+					</tr>
+				</thead>
+
+				<tbody id="tabla">
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<h3 id="result">Resultado</h3>
+
+	<script type="text/javascript">
+		function recargarTabla() {
+			var xmlhttp = new XMLHttpRequest();
+			var url = "request.php";
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					var myArr = JSON.parse(this.responseText);
+					var out = "";
+					var i;
+					var abierta = "No Resuelta";
+					for (i = 0; i < myArr.length; i++) {
+						out += '<tr class="info"><td>' + myArr[i].idPeticion
+								+ '</td><td>' + myArr[i].direccionIP
+								+ '</td><td>' + myArr[i].usuario + '</td><td>'
+								+ myArr[i].texto + '</td><td>' + abierta
+								+ '</td><td>' + myArr[i].fechaInicio
+								+ '</td><td>';
+					}
+					document.getElementById("tabla").innerHTML = out;
+				}
+			};
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send();
+		}
+		function funcionInsertJson() {
+			var user = document.getElementById("txtUsuario").value;
+			var preg = document.getElementById("txtPregunta").value;
+			var array = [];
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.open("POST", "insertPregunta.php");
+			xmlhttp.setRequestHeader("Content-Type",
+					"application/x-www-form-urlencoded");
+
+			var json_upload = "json=" + JSON.stringify({
+				usuario : user,
+				pregunta : preg
+			});
+			xmlhttp.send(json_upload);
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					document.getElementById("result").innerHTML = this.responseText;
+				}
+			};
+			document.getElementById("txtUsuario").value = "";
+			document.getElementById("txtPregunta").value = "";
+		}
+		setInterval('recargarTabla()', '5000');
+	</script>
+
+	<form method="post">
+		ID: <input id="txtID" type="text" name="valor" value="" /><br> <br>
+	</form>
+
+	<button onclick="funcionCerrar();">Cerrar Pregunta</button>
+
+	<script type="text/javascript">
+		function funcionCerrar() {
+			var idPreg = document.getElementById("txtID").value;
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.open("POST", "updatePregunta.php");
+			xmlhttp.setRequestHeader("Content-Type",
+					"application/x-www-form-urlencoded");
+			var json_upload = "json=" + JSON.stringify({
+				id : idPreg
+			});
+			xmlhttp.send(json_upload);
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					document.getElementById("result").innerHTML = this.responseText;
+				}
+			};
+		}
+	</script>
+</body>
+</html>

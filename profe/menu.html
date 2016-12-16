@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Tabla de Dudas de Clase</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body onload="recargarTabla()">
+	<h1>Tabla con JSON:</h1>
+
+	<div align="center">
+		<div style="width: 50%; text-align: center;">
+			<table class="table">
+				<thead>
+					<tr class="warning">
+						<th>idPeticion</th>
+						<th>direccion IP</th>
+						<th>usuario</th>
+						<th>texto</th>
+						<th>abierta</th>
+						<th>fechaInicio</th>
+						<th>fechaFin</th>
+					</tr>
+				</thead>
+
+				<tbody id="tabla">
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<script>
+		function recargarTabla() {
+			var xmlhttp = new XMLHttpRequest();
+			var url = "request.php";
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+
+					var myArr = JSON.parse(this.responseText);
+					var out = "";
+					var i;
+					for (i = 0; i < myArr.length; i++) {
+						var abierta;
+						if (myArr[i].abierta = "0")
+							abierta = "Resuelta";
+						else
+							abierta = "No Resuelta";
+						out += '<tr><td>' + myArr[i].idPeticion + '</td><td>'
+								+ myArr[i].direccionIP + '</td><td>'
+								+ myArr[i].usuario + '</td><td>'
+								+ myArr[i].texto + '</td><td>' + abierta
+								+ '</td><td>' + myArr[i].fechaInicio
+								+ '</td><td>' + myArr[i].fechaFin
+								+ '</td></tr>';
+					}
+					document.getElementById("tabla").innerHTML = out;
+				}
+			};
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send();
+		}
+		setInterval('recargarTabla()', '5000');
+	</script>
+
+</body>
+</html>
