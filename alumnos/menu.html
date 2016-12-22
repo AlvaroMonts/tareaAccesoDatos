@@ -72,7 +72,6 @@
 		function funcionInsertJson() {
 			var user = document.getElementById("txtUsuario").value;
 			var preg = document.getElementById("txtPregunta").value;
-			var array = [];
 			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.open("POST", "insertPregunta.php");
 			xmlhttp.setRequestHeader("Content-Type",
@@ -82,6 +81,7 @@
 				usuario : user,
 				pregunta : preg
 			});
+			//document.write(json_upload);
 			xmlhttp.send(json_upload);
 			xmlhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
